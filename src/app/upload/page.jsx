@@ -1,14 +1,17 @@
 'use client';
 import React, { useState, useEffect } from "react";
 import { UploadDropzone } from "@/utils/uploadthing";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 import Lottie from "lottie-react";
 import animationData from "../../../public/Animation - 1723045195064.json";
 import animationData1 from "../../../public/Animation - 1723045183398.json";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+
 import Image from "next/image";
 import backIcon from "../../../public/ba.png";
-import Alert from "@/components/Alert/Alert"; // Import the Alert component
+
+import Alert from "@/components/Alert/Alert"; 
 
 const categories = [
   "Stationary",

@@ -2,13 +2,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { useCallback } from "react";
-import Navbar from "./nav";
 import { useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
-import "./main.css";
+import "../../../components/ProductPage/main.css";
+import Image from "next/image";
+import Navbar from "../../../components/ProductPage/nav";
 import Modal from "../../../components/Model/Modal";
 
 const ProductPage = () => {

@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import "./1.css";
-import "./2.css";
-import "./3.css";
+import "../../components/Display/CSS/1.css";
+import "../../components/Display/CSS/2.css";
+import "../../components/Display/CSS/3.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

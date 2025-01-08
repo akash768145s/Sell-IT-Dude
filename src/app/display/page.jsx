@@ -6,12 +6,13 @@ import ClientProductsPage from "./ClientProductsPage";
 const fetchProducts = async () => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
+        cache: "no-store", // Ensure fresh data
       }
     );
 
@@ -19,7 +20,7 @@ const fetchProducts = async () => {
       throw new Error("Failed to fetch products");
     }
 
-    const products = await response.json();
+    const { products } = await response.json();
     return products;
   } catch (error) {
     console.error("Error fetching products:", error);

@@ -1,9 +1,20 @@
 import mongoose from "mongoose";
 
-const wishlistSchema = new mongoose.Schema({
-  user: { type: String, required: true },
-  product: { type: mongoose.Schema.Types.Mixed, required: true }, // Adjust as needed
+const { Schema } = mongoose;
+
+const wishlistSchema = new Schema({
+  user: {
+    type: String,
+    required: true,
+  },
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+  },
 });
 
-export default mongoose.models.Wishlist ||
-  mongoose.model("Wishlist", wishlistSchema);
+const Wishlist =
+  mongoose.models.Wishlist || mongoose.model("Wishlist", wishlistSchema);
+
+export default Wishlist;

@@ -53,7 +53,6 @@ const Navbar = () => {
           align-items: center;
           background-color: #004aad;
           color: white;
-          padding: 0.5rem 1rem;
           border-radius: 0.5rem;
           border-bottom: 2px solid #004aad;
           cursor: pointer;

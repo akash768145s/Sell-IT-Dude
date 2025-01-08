@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import phoneIcon from "../../../../public/wishli.png";
-import backIcon from "../../../../public/ba.png";
+import phoneIcon from "../../../public/wishli.png";
+import backIcon from "../../../public/ba.png";
 
 
 const Navbar = () => {
