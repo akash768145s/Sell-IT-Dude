@@ -3,7 +3,7 @@
 import "./globals.css";
 import "@uploadthing/react/styles.css";
 import { Oswald } from "next/font/google";
-import ClientLayout from "./ClientLayout"; 
+import ClientLayout from "./ClientLayout";
 
 const inter = Oswald({ subsets: ["latin"] });
 

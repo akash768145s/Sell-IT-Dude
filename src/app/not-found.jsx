@@ -1,111 +1,104 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
-import notFoundImage from "../../public/Girl-Img.png"; // Adjust the path as necessary
+import { m } from "framer-motion";
+import { Home, Search, ArrowLeft, Package } from "lucide-react";
 
-const NotFoundPage = () => {
+const NotFound = () => {
   return (
-    <div className="container">
-      <Image src={notFoundImage} alt="404 Image" width={500} height={500} />
-      <h1>404</h1>
-      <p>Oops! Page not found</p>
-      <Link href="/">
-        <span className="go-back-link">Go back to homepage</span>
-      </Link>
-      <style jsx>{`
-        * {
-          box-sizing: border-box;
-        }
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center px-4">
+      <div className="text-center max-w-md mx-auto">
+        {/* 404 Animation */}
+        <m.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, type: "spring" }}
+          className="mb-8"
+        >
+          <h1 className="text-8xl lg:text-9xl font-bold text-primary/20 mb-4">
+            404
+          </h1>
+          <div className="text-6xl mb-4">🔍</div>
+        </m.div>
 
-        body {
-          background-color: #0a0b3b;
-          color: #fff;
-          font-family: sans-serif;
-        }
+        {/* Content */}
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+            Oops! Page Not Found
+          </h2>
+          <p className="text-gray-600 mb-8 text-lg">
+            The page you're looking for seems to have wandered off. Don't worry,
+            even the best explorers get lost sometimes!
+          </p>
+        </m.div>
 
-        .container {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-        }
+        {/* Action Buttons */}
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+        >
+          <Link
+            href="/"
+            className="btn btn-primary px-6 py-3 flex items-center gap-2 justify-center group"
+          >
+            <Home className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+            Back to Home
+          </Link>
 
-        h1 {
-          font-size: 6em;
-          margin: 0;
-          animation: pulse 2s ease-in-out infinite;
-        }
+          <Link
+            href="/display"
+            className="btn btn-outline px-6 py-3 flex items-center gap-2 justify-center group"
+          >
+            <Package className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+            Browse Products
+          </Link>
+        </m.div>
 
-        @keyframes pulse {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.2);
-          }
-          100% {
-            transform: scale(1);
-          }
-        }
+        {/* Helpful Links */}
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-12 pt-8 border-t border-gray-200"
+        >
+          <p className="text-sm text-gray-500 mb-4">
+            Looking for something specific?
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <Link
+              href="/upload"
+              className="text-primary hover:text-primary-dark transition-colors duration-200"
+            >
+              Sell Items
+            </Link>
+            <Link
+              href="/wishlist"
+              className="text-primary hover:text-primary-dark transition-colors duration-200"
+            >
+              Wishlist
+            </Link>
+            <Link
+              href="/Profile"
+              className="text-primary hover:text-primary-dark transition-colors duration-200"
+            >
+              Profile
+            </Link>
+          </div>
+        </m.div>
+      </div>
 
-        p {
-          font-size: 1.5em;
-          margin: 0;
-          margin-top: 20px;
-        }
-
-        a {
-          display: inline-block;
-          padding: 10px 20px;
-          background-color: #4293ef;
-          color: #fff;
-          text-decoration: none;
-          margin-top: 20px;
-          font-size: 1.2em;
-          border-radius: 50px;
-          animation: bounce 1s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-          0%,
-          20%,
-          50%,
-          80%,
-          100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-10px);
-          }
-          60% {
-            transform: translateY(-5px);
-          }
-        }
-
-        @media (max-width: 768px) {
-          h1 {
-            font-size: 4em;
-          }
-          p {
-            font-size: 1em;
-          }
-        }
-
-        @media (max-width: 576px) {
-          h1 {
-            font-size: 3em;
-          }
-          p {
-            font-size: 0.8em;
-          }
-          a {
-            font-size: 1em;
-          }
-        }
-      `}</style>
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/5 rounded-full blur-xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl" />
+      </div>
     </div>
   );
 };
 
-export default NotFoundPage;
+export default NotFound;

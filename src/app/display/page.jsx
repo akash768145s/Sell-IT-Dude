@@ -2,35 +2,23 @@
 
 import React from "react";
 import ClientProductsPage from "./ClientProductsPage";
+import connect from "@/utils/db";
+import Product from "@/models/Product";
 
-const fetchProducts = async () => {
+async function fetchProducts() {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store", // Ensure fresh data
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch products");
-    }
-
-    const { products } = await response.json();
+    await connect();
+    const products = await Product.find().sort({ createdAt: -1 }).lean();
+    console.log("Server-side fetched products:", products);
     return products;
   } catch (error) {
     console.error("Error fetching products:", error);
     return [];
   }
-};
+}
 
-const ProductsPage = async () => {
+export default async function ProductsPage() {
   const products = await fetchProducts();
+  console.log("Rendering products page with", products.length, "products");
   return <ClientProductsPage products={products} />;
-};
-
-export default ProductsPage;
+}

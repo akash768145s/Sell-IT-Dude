@@ -1,61 +1,66 @@
-'use client';
-import React from "react";
-import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/Main/navbar";
-import Navbar2 from "../components/Main/pNavbar/pNav";
-import Footer from "../components/Main/Footer/footer";
-import Hero from "../components/Main/Hero/Hero";
+"use client";
+import React, { Suspense, lazy } from "react";
+import { LazyMotion, domAnimation } from "framer-motion";
+import dynamic from "next/dynamic";
+
+// Lazy load components for better performance
+const Navbar = dynamic(() => import("@/components/Main/navbar"), {
+  loading: () => <div className="h-16 bg-white skeleton" />,
+});
+const Hero = dynamic(() => import("@/components/Main/Hero/Hero"), {
+  loading: () => <div className="h-96 bg-gray-50 skeleton" />,
+});
+const ProductShowcase = lazy(() => import("@/components/home/ProductShowcase"));
+const CategoryGrid = lazy(() => import("@/components/home/CategoryGrid"));
+const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
+const Footer = dynamic(() => import("@/components/Main/Footer/footer"), {
+  loading: () => <div className="h-64 bg-gray-100 skeleton" />,
+});
+
+// Loading component
+const LoadingSection = ({ height = "h-64" }) => (
+  <div className={`${height} bg-gray-50 skeleton rounded-lg mx-4`} />
+);
 
 const Home = () => {
   return (
     <LazyMotion features={domAnimation}>
-      <AnimatePresence>
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div id="navbar1">
-            <Navbar />
-          </div>
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            <Navbar2 />
-          </m.div>
+      <div className="min-h-screen bg-white">
+        {/* Navigation */}
+        <Navbar />
 
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            <Hero />
-          </m.div>
+        {/* Hero Section */}
+        <Hero />
 
-          <m.main
-            style={{ paddingTop: "160px" }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1 }}
-          ></m.main>
+        {/* Main Content */}
+        <main className="relative">
+          {/* Category Grid */}
+          <section className="py-16 bg-white">
+            <Suspense fallback={<LoadingSection height="h-96" />}>
+              <CategoryGrid />
+            </Suspense>
+          </section>
 
-          <m.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
-          >
-            <Footer />
-          </m.div>
-        </m.div>
-      </AnimatePresence>
+          {/* How It Works */}
+          <section className="py-16 bg-gray-50">
+            <Suspense fallback={<LoadingSection height="h-96" />}>
+              <HowItWorks />
+            </Suspense>
+          </section>
+
+          {/* Featured Products */}
+          <section className="py-16 bg-white">
+            <Suspense fallback={<LoadingSection height="h-96" />}>
+              <ProductShowcase />
+            </Suspense>
+          </section>
+        </main>
+
+        {/* Footer */}
+        <Footer />
+      </div>
     </LazyMotion>
   );
 };
 
 export default Home;
-
-
-

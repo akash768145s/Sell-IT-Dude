@@ -4,36 +4,38 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import Lottie from "lottie-react";
-import animationData from "../../public/Loading.json";
+
+// Routes that require authentication
+const protectedRoutes = ['/upload', '/Profile', '/wishlist'];
 
 export default function AppWrapper({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
     const router = useRouter();
     const pathname = usePathname();
 
+    // Check if current route requires authentication
+    const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+
     useEffect(() => {
-        if (status === "unauthenticated" && pathname !== "/sign-in") {
+        // Only redirect to sign-in if user is on a protected route and not authenticated
+        if (status === "unauthenticated" && isProtectedRoute) {
             router.push("/sign-in");
         }
-    }, [status, router, pathname]);
+    }, [status, router, pathname, isProtectedRoute]);
 
+    // Show simple loading while session is being determined
     if (status === "loading") {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <Lottie
-                    animationData={animationData}
-                    loop={true}
-                    autoplay={true}
-                    style={{ width: 300, height: 300 }}
-                />
+            <div className="flex justify-center items-center h-screen bg-gray-50">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
             </div>
         );
     }
 
-    if (status === "unauthenticated" && pathname !== "/sign-in") {
+    // Only block rendering if user is unauthenticated on a protected route
+    if (status === "unauthenticated" && isProtectedRoute) {
         return null;
     }
 
-    return <div className="mx-auto text-2xl gap-2 mb-10">{children}</div>;
+    return <div className="min-h-screen">{children}</div>;
 }

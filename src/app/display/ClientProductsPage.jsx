@@ -1,30 +1,28 @@
 // src/app/display/ClientProductsPage.jsx
 
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import ProductList from "./ProductList";
 import Navbar from "../../components/Display/nav";
 import { ToastContainer, toast } from "react-toastify";
 
 const fetchProducts = async () => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/fetch`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store", // Ensure fresh data
-      }
-    );
+    const response = await fetch("/api/products", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
 
     const { products } = await response.json();
+    console.log("Fetched products:", products);
     return products;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -32,17 +30,25 @@ const fetchProducts = async () => {
   }
 };
 
-const ClientProductsPage = ({ products }) => {
-  const [productList, setProductList] = useState(products);
+const ClientProductsPage = ({ products: initialProducts }) => {
+  console.log("Initial products prop:", initialProducts);
+  const [productList, setProductList] = useState(initialProducts || []);
   const router = useRouter();
-  const query = router.query;
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") || "All";
 
-  const category = query?.category || "All";
+  // Update productList when initialProducts changes
+  useEffect(() => {
+    if (initialProducts) {
+      setProductList(initialProducts);
+    }
+  }, [initialProducts]);
 
   // Filter products based on category
   const filteredProducts = productList.filter(
     (product) => category === "All" || product.category === category
   );
+  console.log("Filtered products:", filteredProducts);
 
   const handleDeleteProduct = async (id) => {
     try {
@@ -57,7 +63,7 @@ const ClientProductsPage = ({ products }) => {
       if (response.ok) {
         // Refetch products after successful deletion
         const updatedProducts = await fetchProducts();
-        setProductList(updatedProducts); // Update state with fresh data
+        setProductList(updatedProducts);
         toast.success("Product deleted successfully!");
       } else {
         const data = await response.json();
@@ -72,8 +78,7 @@ const ClientProductsPage = ({ products }) => {
   return (
     <>
       <Navbar />
-      <div className="p-24 bg-[#004aad] -mt-20">
-        <h1 className="text-2xl text-white font-bold mb-4">Product Listings</h1>
+      <div className="min-h-screen bg-gray-100">
         <ProductList
           products={filteredProducts}
           onDelete={handleDeleteProduct}

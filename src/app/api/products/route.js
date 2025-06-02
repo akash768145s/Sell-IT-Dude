@@ -5,11 +5,13 @@ import connect from "@/utils/db";
 import Product from "@/models/Product";
 import { getToken } from "next-auth/jwt";
 
+// Force dynamic routing
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
   await connect();
 
   const { name, description, price, category, imageUrl } = await request.json();
-
 
   const token = await getToken({
     req: request,
@@ -72,20 +74,29 @@ export async function DELETE(request) {
 }
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const sellerEmail = searchParams.get("sellerEmail");
-
-  await connect();
-
   try {
-    let products;
+    const { searchParams } = new URL(request.url);
+    const sellerEmail = searchParams.get("sellerEmail");
+    const limit = searchParams.get("limit");
+
+    console.log("Fetching products with params:", { sellerEmail, limit });
+
+    await connect();
+
+    let query = {};
     if (sellerEmail) {
-      products = await Product.find({ sellerEmail });
-    } else {
-      products = await Product.find();
+      query.sellerEmail = sellerEmail;
     }
 
-    return NextResponse.json({ products });
+    let products = await Product.find(query).sort({ createdAt: -1 }).lean();
+    console.log(`Found ${products.length} products`);
+
+    if (limit) {
+      products = products.slice(0, parseInt(limit));
+      console.log(`Limited to ${products.length} products`);
+    }
+
+    return NextResponse.json({ products }, { status: 200 });
   } catch (error) {
     console.error("Error fetching products:", error);
     return NextResponse.json(
