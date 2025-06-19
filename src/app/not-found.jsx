@@ -30,7 +30,7 @@ const NotFound = () => {
             Oops! Page Not Found
           </h2>
           <p className="text-gray-600 mb-8 text-lg">
-            The page you're looking for seems to have wandered off. Don't worry,
+            The page you&apos;re looking for seems to have wandered off. Don&apos;t worry,
             even the best explorers get lost sometimes!
           </p>
         </m.div>

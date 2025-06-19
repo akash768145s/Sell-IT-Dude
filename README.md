@@ -156,11 +156,11 @@ src/
 
 4. **Run the development server**
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+```bash
+npm run dev
+# or
+yarn dev
+```
 
 5. **Open in browser**
    Visit [http://localhost:3000](http://localhost:3000)

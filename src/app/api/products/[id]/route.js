@@ -21,7 +21,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).lean();
 
     if (!product) {
       return NextResponse.json(
@@ -30,7 +30,16 @@ export async function GET(request, { params }) {
       );
     }
 
-    return NextResponse.json({ product }, { status: 200 });
+    // Serialize the MongoDB document to plain JSON
+    const serializedProduct = {
+      ...product,
+      _id: product._id.toString(),
+      createdAt: product.createdAt?.toISOString(),
+      updatedAt: product.updatedAt?.toISOString(),
+    };
+
+    console.log(`Fetched product with ID: ${id}`);
+    return NextResponse.json({ product: serializedProduct }, { status: 200 });
   } catch (error) {
     console.error("Error fetching product:", error);
     return NextResponse.json(

@@ -12,7 +12,12 @@ const wishlistSchema = new Schema({
     ref: "Product",
     required: true,
   },
+}, {
+  timestamps: true, // Add createdAt and updatedAt fields
 });
+
+// Create a unique compound index to prevent duplicate user-product combinations
+wishlistSchema.index({ user: 1, product: 1 }, { unique: true });
 
 const Wishlist =
   mongoose.models.Wishlist || mongoose.model("Wishlist", wishlistSchema);

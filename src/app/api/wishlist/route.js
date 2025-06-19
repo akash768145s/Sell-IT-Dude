@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import connect from "../../../utils/db";
 import Wishlist from "../../../models/Wishlist";
-import Product from "../../../models/Product"; // Import Product model to validate product existence
+import Product from "../../../models/Product";
 import { NextResponse } from "next/server";
 
 // Add a product to the wishlist
@@ -16,10 +16,18 @@ export async function POST(request) {
   await connect();
 
   try {
-    const { product } = await request.json();
+    const { productId, userEmail } = await request.json();
+
+    // Validate input
+    if (!productId) {
+      return NextResponse.json(
+        { message: "Product ID is required" },
+        { status: 400 }
+      );
+    }
 
     // Check if the product exists in the database
-    const existingProduct = await Product.findById(product._id);
+    const existingProduct = await Product.findById(productId);
     if (!existingProduct) {
       return NextResponse.json(
         { message: "Product not found" },
@@ -27,29 +35,45 @@ export async function POST(request) {
       );
     }
 
+    // Use session email for security (don't trust client-provided email)
+    const userEmailToUse = session.user.email;
+
     // Check if the product is already in the wishlist for this user
     const existingWishlistItem = await Wishlist.findOne({
-      user: session.user.email,
-      "product._id": product._id,
+      user: userEmailToUse,
+      product: productId,
     });
 
     if (existingWishlistItem) {
       return NextResponse.json(
-        { message: "Product already in wishlist" },
-        { status: 400 }
+        { message: "Product is already in your wishlist" },
+        { status: 409 } // 409 Conflict status for duplicates
       );
     }
 
-    // Add the product to the wishlist
-    const wishlistItem = new Wishlist({ user: session.user.email, product });
+    // Add the product to the wishlist (store product ID reference)
+    const wishlistItem = new Wishlist({
+      user: userEmailToUse,
+      product: productId
+    });
+
     await wishlistItem.save();
 
     return NextResponse.json(
-      { message: "Product added to wishlist" },
+      { message: "Product added to wishlist successfully" },
       { status: 200 }
     );
   } catch (error) {
     console.error("Error adding product to wishlist:", error);
+
+    // Handle MongoDB duplicate key error (in case of race conditions)
+    if (error.code === 11000 || error.name === 'MongoServerError') {
+      return NextResponse.json(
+        { message: "Product is already in your wishlist" },
+        { status: 409 }
+      );
+    }
+
     return NextResponse.json(
       { message: "Error adding product to wishlist", error: error.message },
       { status: 500 }
@@ -69,10 +93,14 @@ export async function GET(request) {
 
   try {
     // Fetch all wishlist items for the authenticated user
-    const wishlist = await Wishlist.find({ user: session.user.email }).populate(
-      "product"
-    ); // Populate product details
-    return NextResponse.json(wishlist, { status: 200 });
+    const wishlist = await Wishlist.find({ user: session.user.email })
+      .populate("product")
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    // Filter out items where product population failed (product was deleted)
+    const validWishlist = wishlist.filter(item => item.product !== null);
+
+    return NextResponse.json(validWishlist, { status: 200 });
   } catch (error) {
     console.error("Error fetching wishlist:", error);
     return NextResponse.json(

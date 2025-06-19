@@ -2,10 +2,15 @@
 
 import "./globals.css";
 import "@uploadthing/react/styles.css";
-import { Oswald } from "next/font/google";
+import { Inter } from "next/font/google";
 import ClientLayout from "./ClientLayout";
 
-const inter = Oswald({ subsets: ["latin"] });
+// Use Inter with display: swap for better performance
+const inter = Inter({
+  subsets: ["latin"],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata = {
   title: "Sell it Dude",

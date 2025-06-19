@@ -3,11 +3,11 @@ import connect from '@/utils/db';
 import Wishlist from '@/models/Wishlist';
 import { getServerSession } from "next-auth/next";
 
-// DELETE a product from the wishlist by ID
+// DELETE a product from the wishlist by product ID
 export async function DELETE(request, { params }) {
   await connect();
-  
-  const { id } = params; // Extract the wishlist item ID
+
+  const { id } = params; // Extract the product ID
   const session = await getServerSession({ req: request });
 
   // Check if the session exists and the user is authenticated
@@ -16,9 +16,9 @@ export async function DELETE(request, { params }) {
   }
 
   try {
-    // Find and delete the wishlist item by ID and user email
+    // Find and delete the wishlist item by product ID and user email
     const deletedWishlistItem = await Wishlist.findOneAndDelete({
-      _id: id,
+      product: id, // Use product ID instead of wishlist item ID
       user: session.user.email,
     });
 

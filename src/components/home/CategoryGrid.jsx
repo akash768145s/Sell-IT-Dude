@@ -16,28 +16,28 @@ const categories = [
   {
     name: "Stationary",
     icon: BookOpen,
-    description: "Books, pens, notebooks & more",
+    description: "Books, pens, notebooks & study stuff 📚",
     color: "bg-blue-500",
     href: "/display?category=Stationary",
   },
   {
     name: "Electronics",
     icon: Laptop,
-    description: "Laptops, phones, gadgets",
+    description: "Cool tech & gadgets ⚡",
     color: "bg-purple-500",
     href: "/display?category=Electronics",
   },
   {
     name: "Sport Equipment",
     icon: Dumbbell,
-    description: "Sports gear & equipment",
+    description: "Sports gear & fitness stuff 🏃‍♂️",
     color: "bg-green-500",
     href: "/display?category=Sport Equipment",
   },
   {
     name: "Other Accessories",
     icon: Package,
-    description: "Everything else you need",
+    description: "Random awesome stuff 🎁",
     color: "bg-orange-500",
     href: "/display?category=Other Accessories",
   },
@@ -88,7 +88,7 @@ const CategoryGrid = () => {
           viewport={{ once: true }}
           className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
         >
-          Shop by Category
+          🛍️ What Are You Looking For?
         </m.h2>
         <m.p
           initial={{ opacity: 0, y: 20 }}
@@ -97,8 +97,7 @@ const CategoryGrid = () => {
           transition={{ delay: 0.1 }}
           className="text-lg text-gray-600 max-w-2xl mx-auto"
         >
-          Find exactly what you need from our organized categories of student
-          essentials
+          Browse through our awesome categories and find exactly what you need! 🎯
         </m.p>
       </div>
 
@@ -116,7 +115,7 @@ const CategoryGrid = () => {
         className="text-center mt-8"
       >
         <Link href="/display" className="btn btn-outline px-6 py-3 text-base">
-          View All Products
+          Explore Everything 🌟
         </Link>
       </m.div>
     </div>

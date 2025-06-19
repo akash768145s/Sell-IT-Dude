@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight } from "lucide-react";
+import { FriendlyLoading } from "@/components/ui/Loading";
 
 const ProductCard = ({ product, index }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -42,9 +43,8 @@ const ProductCard = ({ product, index }) => {
             aria-label="Add to wishlist"
           >
             <Heart
-              className={`w-4 h-4 ${
-                isLiked ? "fill-red-500 text-red-500" : "text-gray-600"
-              }`}
+              className={`w-4 h-4 ${isLiked ? "fill-red-500 text-red-500" : "text-gray-600"
+                }`}
             />
           </button>
 
@@ -67,10 +67,6 @@ const ProductCard = ({ product, index }) => {
           <div className="flex items-center justify-between mb-3">
             <div className="text-lg font-bold text-primary">
               ₹{product.price?.toLocaleString()}
-            </div>
-            <div className="flex items-center text-sm text-gray-500">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 mr-1" />
-              <span>4.5</span>
             </div>
           </div>
 
@@ -164,24 +160,8 @@ const ProductShowcase = () => {
   if (loading) {
     return (
       <div className="container">
-        <div className="text-center mb-12">
-          <div className="h-8 bg-gray-200 rounded w-64 mx-auto mb-4 skeleton" />
-          <div className="h-4 bg-gray-200 rounded w-96 mx-auto skeleton" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow-card overflow-hidden"
-            >
-              <div className="h-48 bg-gray-200 skeleton" />
-              <div className="p-4 space-y-3">
-                <div className="h-4 bg-gray-200 rounded skeleton" />
-                <div className="h-3 bg-gray-200 rounded skeleton" />
-                <div className="h-4 bg-gray-200 rounded w-20 skeleton" />
-              </div>
-            </div>
-          ))}
+        <div className="text-center py-16">
+          <FriendlyLoading text="Finding awesome products for you..." />
         </div>
       </div>
     );
@@ -196,7 +176,7 @@ const ProductShowcase = () => {
           viewport={{ once: true }}
           className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
         >
-          Featured Products
+          🔥 Hot Finds from Fellow Students
         </m.h2>
         <m.p
           initial={{ opacity: 0, y: 20 }}
@@ -205,7 +185,7 @@ const ProductShowcase = () => {
           transition={{ delay: 0.1 }}
           className="text-lg text-gray-600 max-w-2xl mx-auto"
         >
-          Discover the best deals from your fellow students
+          Check out these awesome deals your campus buddies are sharing! 🤝
         </m.p>
       </div>
 
@@ -223,7 +203,7 @@ const ProductShowcase = () => {
         className="text-center"
       >
         <Link href="/display" className="btn btn-primary px-8 py-3 text-base">
-          View All Products
+          See More Cool Stuff 🚀
         </Link>
       </m.div>
     </div>

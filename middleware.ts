@@ -6,7 +6,11 @@ export async function middleware(request: NextRequest) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     const { pathname } = request.nextUrl;
 
-    if (!token && pathname !== '/signin') {
+    // Public routes that don't require authentication
+    const publicRoutes = ['/signin', '/display', '/product'];
+    const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route)) || pathname === '/';
+
+    if (!token && !isPublicRoute) {
         const url = request.nextUrl.clone();
         url.pathname = '/signin';
         return NextResponse.redirect(url);
@@ -27,5 +31,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/', '/protected/**', '/signin', '/:path*'],
+    matcher: ['/', '/protected/**', '/signin', '/display/:path*', '/product/:path*', '/upload/:path*', '/wishlist/:path*'],
 };

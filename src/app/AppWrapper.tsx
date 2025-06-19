@@ -4,6 +4,7 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { PageLoading } from "@/components/ui/Loading";
 
 // Routes that require authentication
 const protectedRoutes = ['/upload', '/Profile', '/wishlist'];
@@ -23,13 +24,9 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
         }
     }, [status, router, pathname, isProtectedRoute]);
 
-    // Show simple loading while session is being determined
+    // Show friendly loading while session is being determined
     if (status === "loading") {
-        return (
-            <div className="flex justify-center items-center h-screen bg-gray-50">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
-            </div>
-        );
+        return <PageLoading text="Setting up your session..." />;
     }
 
     // Only block rendering if user is unauthenticated on a protected route

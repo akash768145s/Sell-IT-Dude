@@ -5,28 +5,28 @@ import { Search, ShoppingCart, MessageCircle, CheckCircle } from "lucide-react";
 const steps = [
   {
     icon: Search,
-    title: "Browse & Search",
+    title: "Browse & Search 🔍",
     description:
-      "Find what you need from thousands of student listings across all categories",
+      "Scroll through tons of cool stuff posted by your fellow students!",
     step: "01",
   },
   {
     icon: MessageCircle,
-    title: "Connect & Chat",
+    title: "Connect & Chat 💬",
     description:
-      "Contact sellers directly to ask questions and negotiate prices",
+      "Hit up the seller, ask questions, and maybe score a sweet deal!",
     step: "02",
   },
   {
     icon: ShoppingCart,
-    title: "Meet & Purchase",
-    description: "Arrange a safe meetup on campus to inspect and buy the item",
+    title: "Meet & Purchase 🤝",
+    description: "Meet up on campus, check out the item, and make it yours!",
     step: "03",
   },
   {
     icon: CheckCircle,
-    title: "Rate & Review",
-    description: "Share your experience to help build a trusted community",
+    title: "Rate & Review ⭐",
+    description: "Give them a shoutout and help build our awesome community!",
     step: "04",
   },
 ];
@@ -81,7 +81,7 @@ const HowItWorks = () => {
           viewport={{ once: true }}
           className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
         >
-          How It Works
+          🚀 How Selling Works (It's Super Easy!)
         </m.h2>
         <m.p
           initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ const HowItWorks = () => {
           transition={{ delay: 0.1 }}
           className="text-lg text-gray-600 max-w-2xl mx-auto"
         >
-          Getting what you need (or selling what you don't) is simple and secure
+          Just 4 simple steps to start buying & selling like a pro! 😄
         </m.p>
       </div>
 
@@ -110,24 +110,23 @@ const HowItWorks = () => {
       >
         <div className="bg-gradient-to-r from-primary to-primary-light rounded-2xl p-8 lg:p-12 text-white">
           <h3 className="text-2xl lg:text-3xl font-bold mb-4">
-            Ready to Start Trading?
+            Ready to Join the Fun? 🎉
           </h3>
           <p className="text-lg opacity-90 mb-8 max-w-xl mx-auto">
-            Join thousands of students already buying and selling on our
-            platform
+            Thousands of students are already having a blast buying and selling here!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/display"
               className="btn bg-white text-primary hover:bg-gray-50 px-8 py-3"
             >
-              Browse Products
+              Start Shopping! 🛒
             </a>
             <a
               href="/upload"
               className="btn btn-outline border-white text-white hover:bg-white hover:text-primary px-8 py-3"
             >
-              Sell Your Item
+              Sell My Stuff! 💰
             </a>
           </div>
         </div>

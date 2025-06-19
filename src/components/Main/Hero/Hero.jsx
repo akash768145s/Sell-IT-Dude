@@ -31,7 +31,7 @@ const Hero = () => {
               className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6"
             >
               <TrendingUp className="w-4 h-4" />
-              New Student Marketplace
+              🎉 Join the Sell It Dude Community!
             </m.div>
 
             {/* Main Heading */}
@@ -41,11 +41,11 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight"
             >
-              Turn Your{" "}
+              Hey Dude,{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-600">
-                Campus Finds
+                Sell It Easy!
               </span>{" "}
-              Into Cash
+              💰
             </m.h1>
 
             {/* Subtitle */}
@@ -55,8 +55,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0"
             >
-              Buy and sell textbooks, electronics, and campus essentials with
-              fellow students. Safe, easy, and affordable.
+              Your friendly campus marketplace! Buy cool stuff, sell awesome things, and connect with fellow students. It&apos;s that simple, dude! 😎
             </m.p>
 
             {/* CTA Buttons */}
@@ -70,14 +69,14 @@ const Hero = () => {
                 href="/display"
                 className="btn btn-primary px-8 py-4 text-lg font-semibold flex items-center gap-2 group"
               >
-                Browse Products
+                Start Shopping 🛍️
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
               <Link
                 href="/upload"
                 className="btn btn-outline px-8 py-4 text-lg font-semibold"
               >
-                Sell Your Items
+                Sell Your Stuff 📦
               </Link>
             </m.div>
           </m.div>

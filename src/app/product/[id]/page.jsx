@@ -16,9 +16,9 @@ import {
   MessageCircle,
   Loader2,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import "react-toastify/dist/ReactToastify.css";
+import SafeImage from "@/components/ui/SafeImage";
 
 const ProductPage = () => {
   const { data: session } = useSession();
@@ -30,7 +30,6 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isInWishlist, setIsInWishlist] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
 
   // Fetch product data
@@ -202,7 +201,7 @@ Listed on: SellItDude
             {error || "Product Not Found"}
           </h2>
           <p className="text-gray-600 mb-6">
-            The product you're looking for doesn't exist or has been removed.
+            The product you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
           <div className="space-x-4">
             <button
@@ -224,9 +223,6 @@ Listed on: SellItDude
   }
 
   const fallbackImage = "/image-product-1.jpg";
-  const productImage = imageError
-    ? fallbackImage
-    : product.imageUrl || fallbackImage;
 
   // Check if current user is the seller
   const isSeller = session?.user?.email === product.sellerEmail;
@@ -257,11 +253,10 @@ Listed on: SellItDude
               {!isSeller && (
                 <button
                   onClick={handleWishlistToggle}
-                  className={`p-2 transition-colors ${
-                    isInWishlist
-                      ? "text-red-500"
-                      : "text-gray-600 hover:text-red-500"
-                  }`}
+                  className={`p-2 transition-colors ${isInWishlist
+                    ? "text-red-500"
+                    : "text-gray-600 hover:text-red-500"
+                    }`}
                   title={
                     isInWishlist ? "Remove from wishlist" : "Add to wishlist"
                   }
@@ -283,13 +278,14 @@ Listed on: SellItDude
           <div className="space-y-4">
             <div className="relative bg-white rounded-2xl overflow-hidden shadow-lg">
               <div className="aspect-square relative">
-                <Image
-                  src={productImage}
+                <SafeImage
+                  src={product.imageUrl}
                   alt={product.name || "Product image"}
+                  fallbackSrc={fallbackImage}
                   fill
                   className="object-cover"
-                  onError={() => setImageError(true)}
                   priority
+                  style={{ objectFit: "cover" }}
                 />
 
                 {/* Category Badge */}
@@ -363,7 +359,7 @@ Listed on: SellItDude
               <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
                 <p className="text-blue-800 text-sm">
                   <strong>This is your listing.</strong> Potential buyers will
-                  contact you via email when they're interested in this item.
+                  contact you via email when they&apos;re interested in this item.
                 </p>
               </div>
             )}

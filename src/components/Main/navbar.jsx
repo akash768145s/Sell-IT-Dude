@@ -66,9 +66,8 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-white"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-white"
+          }`}
       >
         <div className="container">
           <div className="flex items-center justify-between h-16 lg:h-20">
@@ -102,13 +101,12 @@ const Navbar = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                      link.primary
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${link.primary
                         ? "bg-primary text-white hover:bg-primary-dark shadow-sm"
                         : isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-gray-600 hover:text-primary hover:bg-gray-50"
-                    }`}
+                          ? "bg-primary/10 text-primary"
+                          : "text-gray-600 hover:text-primary hover:bg-gray-50"
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     {link.label}
@@ -224,13 +222,12 @@ const Navbar = () => {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                        link.primary
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${link.primary
                           ? "bg-primary text-white"
                           : isActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-gray-600 hover:bg-gray-50"
-                      }`}
+                            ? "bg-primary/10 text-primary"
+                            : "text-gray-600 hover:bg-gray-50"
+                        }`}
                     >
                       <Icon className="w-5 h-5" />
                       {link.label}

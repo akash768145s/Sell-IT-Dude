@@ -15,7 +15,7 @@ const ProductCard = () => {
         <hr className="card-divider" />
         <div className="card-footer">
           <div className="card-price">
-            <span>$</span> 123.45
+            <span>₹</span> 123.45
           </div>
           <button className="card-btn">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
