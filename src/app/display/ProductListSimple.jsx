@@ -13,6 +13,7 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, onRemoveFromWishlist,
     if (!product) return null;
 
     const isOwner = session?.user?.email === product.sellerEmail;
+    const isAdmin = session?.user?.email === process.env.NEXTAUTH_ADMIN_EMAIL;
 
     const handleWishlistToggle = () => {
         if (isInWishlist) {
@@ -80,13 +81,17 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, onRemoveFromWishlist,
                         </button>
                     )}
 
-                    {isOwner && (
+                    {(isOwner || isAdmin) && (
                         <button
                             onClick={() => onDelete(product._id)}
-                            className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                            className={`flex-1 py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 ${isAdmin && !isOwner
+                                ? "bg-orange-500 text-white hover:bg-orange-600"
+                                : "bg-red-500 text-white hover:bg-red-600"
+                                }`}
+                            title={isAdmin && !isOwner ? "Admin Delete" : "Delete Product"}
                         >
                             <Trash2 className="w-4 h-4" />
-                            Delete
+                            {isAdmin && !isOwner ? "Admin Delete" : "Delete"}
                         </button>
                     )}
 
@@ -101,7 +106,8 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, onRemoveFromWishlist,
 
                     {product.sellerEmail && (
                         <a
-                            href={`mailto:${product.sellerEmail}`}
+                            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${product.sellerEmail}`}
+                            target="_blank"
                             className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center"
                         >
                             <Mail className="w-4 h-4" />

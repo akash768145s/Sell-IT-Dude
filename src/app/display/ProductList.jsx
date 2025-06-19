@@ -59,6 +59,7 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, index }) => {
   };
 
   const isOwner = session?.user?.email === product.sellerEmail;
+  const isAdmin = session?.user?.email === process.env.NEXTAUTH_ADMIN_EMAIL;
 
   return (
     <div className="group bg-white rounded-2xl border border-gray-200 hover:border-primary/20 hover:shadow-lg transition-all duration-300">
@@ -77,7 +78,7 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, index }) => {
 
         {/* Overlay buttons */}
         <div className="absolute top-3 right-3 flex gap-2">
-          {!isOwner && (
+          {!isOwner && !isAdmin && (
             <button
               onClick={() => onAddToWishlist && onAddToWishlist(product)}
               className="p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-colors"
@@ -87,7 +88,7 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, index }) => {
             </button>
           )}
 
-          {isOwner && (
+          {(isOwner || isAdmin) && (
             <>
               <button
                 onClick={() => router.push(`/product/${product._id}`)}
@@ -98,10 +99,15 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, index }) => {
               </button>
               <button
                 onClick={handleDelete}
-                className="p-2 bg-red-50/90 hover:bg-red-100 rounded-full shadow-sm transition-colors"
-                aria-label="Delete product"
+                className={`p-2 rounded-full shadow-sm transition-colors ${isAdmin && !isOwner
+                  ? "bg-orange-50/90 hover:bg-orange-100"
+                  : "bg-red-50/90 hover:bg-red-100"
+                  }`}
+                aria-label={isAdmin && !isOwner ? "Admin Delete" : "Delete product"}
+                title={isAdmin && !isOwner ? "Admin Delete" : "Delete Product"}
               >
-                <Trash2 className="w-4 h-4 text-red-500" />
+                <Trash2 className={`w-4 h-4 ${isAdmin && !isOwner ? "text-orange-500" : "text-red-500"
+                  }`} />
               </button>
             </>
           )}
@@ -161,7 +167,8 @@ const ProductCard = ({ product, onDelete, onAddToWishlist, index }) => {
 
           {product.sellerEmail && (
             <a
-              href={`mailto:${product.sellerEmail}`}
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${product.sellerEmail}`}
+              target="_blank"
               className="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm hover:bg-blue-100 transition-colors flex-1 justify-center"
             >
               <Mail className="w-4 h-4" />

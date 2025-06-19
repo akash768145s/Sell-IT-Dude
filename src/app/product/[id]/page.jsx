@@ -15,6 +15,7 @@ import {
   Phone,
   MessageCircle,
   Loader2,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import "react-toastify/dist/ReactToastify.css";
@@ -141,10 +142,10 @@ Dear ${product.sellerName || "Seller"},
 I am interested in "${product.name}" listed on SellItDude marketplace.
 
 Could you provide more details or suggest a time to discuss?
-
-Thank you!
-
-Best regards,
+      
+      Thank you!
+      
+      Best regards,
 ${session.user?.name || "Buyer"}
 
 ---
@@ -154,10 +155,11 @@ Listed on: SellItDude
     `.trim()
     );
 
-    const mailtoUrl = `mailto:${product.sellerEmail}?subject=${subject}&body=${body}`;
-    window.open(mailtoUrl, "_blank");
+    // Use Gmail's compose URL instead of mailto:
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${product.sellerEmail}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, "_blank");
 
-    toast.success("Opening email client...");
+    toast.success("Opening Gmail...");
   };
 
   const handleShare = async () => {
@@ -226,6 +228,39 @@ Listed on: SellItDude
 
   // Check if current user is the seller
   const isSeller = session?.user?.email === product.sellerEmail;
+  const isAdmin = session?.user?.email === process.env.NEXTAUTH_ADMIN_EMAIL;
+
+  const handleDeleteProduct = async () => {
+    if (!product?._id) return;
+
+    const confirmMessage = isAdmin && !isSeller
+      ? "Are you sure you want to delete this product as an admin?"
+      : "Are you sure you want to delete your product?";
+
+    if (!confirm(confirmMessage)) return;
+
+    try {
+      const response = await fetch(`/api/products/${product._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Product deleted successfully!");
+        setTimeout(() => {
+          router.push("/display");
+        }, 1000);
+      } else {
+        const data = await response.json();
+        toast.error(data.message || "Failed to delete product");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error("Error deleting product");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -356,11 +391,34 @@ Listed on: SellItDude
 
             {/* Seller Notice */}
             {isSeller && (
-              <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+              <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg space-y-3">
                 <p className="text-blue-800 text-sm">
                   <strong>This is your listing.</strong> Potential buyers will
                   contact you via email when they&apos;re interested in this item.
                 </p>
+                <button
+                  onClick={handleDeleteProduct}
+                  className="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-5 h-5" />
+                  Delete Product
+                </button>
+              </div>
+            )}
+
+            {/* Admin Delete */}
+            {isAdmin && !isSeller && (
+              <div className="bg-orange-50 border border-orange-200 p-4 rounded-lg space-y-3">
+                <p className="text-orange-800 text-sm">
+                  <strong>Admin Controls:</strong> You can delete this product as an administrator.
+                </p>
+                <button
+                  onClick={handleDeleteProduct}
+                  className="w-full bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-5 h-5" />
+                  Admin Delete
+                </button>
               </div>
             )}
           </div>

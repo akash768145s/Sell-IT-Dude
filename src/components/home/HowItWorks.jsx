@@ -81,7 +81,7 @@ const HowItWorks = () => {
           viewport={{ once: true }}
           className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
         >
-          🚀 How Selling Works (It's Super Easy!)
+          🚀 How Selling Works (It&apos;s Super Easy!)
         </m.h2>
         <m.p
           initial={{ opacity: 0, y: 20 }}

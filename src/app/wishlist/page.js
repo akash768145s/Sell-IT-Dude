@@ -55,12 +55,9 @@ const WishlistPage = () => {
         return;
       }
 
-      const responseData = await response.json();
-      console.log(responseData.message);
-
       // Update the wishlist UI after successful removal
       setWishlist((prevWishlist) =>
-        prevWishlist.filter((item) => item._id !== productId)
+        prevWishlist.filter((item) => item.product._id !== productId)
       );
     } catch (error) {
       console.error("Error removing product from wishlist:", error);
@@ -207,7 +204,7 @@ const WishlistPage = () => {
                             View Product
                           </Link>
                           <button
-                            onClick={() => handleRemoveFromWishlist(item._id)}
+                            onClick={() => handleRemoveFromWishlist(product._id)}
                             className="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition-colors"
                             title="Remove from wishlist"
                           >

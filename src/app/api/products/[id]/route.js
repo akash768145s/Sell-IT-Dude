@@ -49,11 +49,11 @@ export async function GET(request, { params }) {
   }
 }
 
-export async function DELETE(request) {
+export async function DELETE(request, { params }) {
   try {
     await connect();
 
-    const { id } = await request.json();
+    const { id } = params;
     if (!id) {
       return NextResponse.json(
         { message: "Product ID is required" },
@@ -91,7 +91,7 @@ export async function DELETE(request) {
           { status: 404 }
         );
       }
-      if (product.sellerName !== token.name) {
+      if (product.sellerEmail !== token.email) {
         return NextResponse.json(
           { message: "Unauthorized to delete this product" },
           { status: 403 }

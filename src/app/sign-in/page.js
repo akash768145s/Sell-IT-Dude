@@ -1,17 +1,27 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import GoogleButton from "@/components/googlebutton";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const HomePage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleGoToDashboard = () => {
-    router.push("/"); // Adjust the path to your dashboard route
+    router.push("/");
   };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return null;
+  }
 
   return (
     <div
@@ -21,20 +31,20 @@ const HomePage = () => {
       {session ? (
         <>
           <div className="text-center">
-          <Image
-            src="/Logo2.png" // Update the path to your logo image
-            alt="Logo"
-            width={175} // Set the desired width
-            height={175} // Set the desired height
-            className="mb-4"
-            style={{ marginLeft: "20px" }} // Adjust the margin to move the image to the right
-          />
-          <h1
-            className="font-semibold text-white mb-2"
-            style={{ fontSize: "2rem", marginTop: "-35px" }} // Move the tagline up slightly
-          >
-            Sell it Dude!
-          </h1>
+            <Image
+              src="/Logo2.png"
+              alt="Logo"
+              width={175}
+              height={175}
+              className="mb-4"
+              style={{ marginLeft: "20px" }}
+            />
+            <h1
+              className="font-semibold text-white mb-2"
+              style={{ fontSize: "2rem", marginTop: "-35px" }}
+            >
+              Sell it Dude!
+            </h1>
             <button
               onClick={handleGoToDashboard}
               className="px-4 -mr-3 py-2 bg-[#004aad] text-white rounded hover:bg-[#004aad] transition-colors duration-300"
@@ -46,16 +56,16 @@ const HomePage = () => {
       ) : (
         <div className="text-center">
           <Image
-            src="/Logo2.png" // Update the path to your logo image
+            src="/Logo2.png"
             alt="Logo"
-            width={175} // Set the desired width
-            height={175} // Set the desired height
+            width={175}
+            height={175}
             className="mb-4"
-            style={{ marginLeft: "20px" }} // Adjust the margin to move the image to the right
+            style={{ marginLeft: "20px" }}
           />
           <h1
             className="font-semibold text-white mb-2"
-            style={{ fontSize: "2rem", marginTop: "-35px" }} // Move the tagline up slightly
+            style={{ fontSize: "2rem", marginTop: "-35px" }}
           >
             Sell it Dude!
           </h1>
