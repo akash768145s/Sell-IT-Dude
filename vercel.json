@@ -1,9 +1,0 @@
-{
-  "framework": "nextjs",
-  "functions": {
-    "app/api/**/*.js": {
-      "maxDuration": 10
-    }
-  },
-  "regions": ["bom1"]
-} 

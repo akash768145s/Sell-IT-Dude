@@ -285,22 +285,6 @@ Listed on: SellItDude
                 <Share2 className="w-5 h-5" />
               </button>
 
-              {!isSeller && (
-                <button
-                  onClick={handleWishlistToggle}
-                  className={`p-2 transition-colors ${isInWishlist
-                    ? "text-red-500"
-                    : "text-gray-600 hover:text-red-500"
-                    }`}
-                  title={
-                    isInWishlist ? "Remove from wishlist" : "Add to wishlist"
-                  }
-                >
-                  <Heart
-                    className={`w-5 h-5 ${isInWishlist ? "fill-current" : ""}`}
-                  />
-                </button>
-              )}
             </div>
           </div>
         </div>
