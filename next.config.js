@@ -5,17 +5,13 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
-        port: "",
-        pathname: "/f/**",
       },
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
-        port: "",
-        pathname: "/**",
       },
     ],
-    unoptimized: process.env.NODE_ENV === 'development',
+    domains: ["utfs.io", "lh3.googleusercontent.com"],
   },
   eslint: {
     ignoreDuringBuilds: false,
@@ -23,7 +19,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  output: 'standalone',
 };
 
 module.exports = nextConfig;
