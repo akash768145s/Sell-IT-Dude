@@ -18,6 +18,7 @@ import {
   Package,
   Upload,
   ChevronDown,
+  MessageCircle,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -50,6 +51,7 @@ const Navbar = () => {
 
   const userMenuItems = [
     { href: "/Profile", label: "My Profile", icon: User },
+    { href: "/chat", label: "Messages", icon: MessageCircle },
     { href: "/wishlist", label: "Wishlist", icon: Heart },
     { href: "/upload", label: "Sell Item", icon: Plus },
   ];
@@ -102,10 +104,10 @@ const Navbar = () => {
                     key={link.href}
                     href={link.href}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${link.primary
-                        ? "bg-primary text-white hover:bg-primary-dark shadow-sm"
-                        : isActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-gray-600 hover:text-primary hover:bg-gray-50"
+                      ? "bg-primary text-white hover:bg-primary-dark shadow-sm"
+                      : isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-gray-600 hover:text-primary hover:bg-gray-50"
                       }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -223,10 +225,10 @@ const Navbar = () => {
                       key={link.href}
                       href={link.href}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${link.primary
-                          ? "bg-primary text-white"
-                          : isActive
-                            ? "bg-primary/10 text-primary"
-                            : "text-gray-600 hover:bg-gray-50"
+                        ? "bg-primary text-white"
+                        : isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-gray-600 hover:bg-gray-50"
                         }`}
                     >
                       <Icon className="w-5 h-5" />

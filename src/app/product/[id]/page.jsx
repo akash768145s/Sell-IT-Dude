@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 import "react-toastify/dist/ReactToastify.css";
 import SafeImage from "@/components/ui/SafeImage";
+import ChatWindow from "@/components/chat/ChatWindow";
 
 const ProductPage = () => {
   const { data: session } = useSession();
@@ -32,6 +33,7 @@ const ProductPage = () => {
   const [error, setError] = useState(null);
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+  const [selectedConversation, setSelectedConversation] = useState(null);
 
   // Fetch product data
   useEffect(() => {
@@ -126,7 +128,7 @@ const ProductPage = () => {
     }
   };
 
-  const handleContactSeller = () => {
+  const handleContactSeller = async () => {
     if (!session) {
       toast.error("Please sign in to contact seller");
       return;
@@ -134,32 +136,31 @@ const ProductPage = () => {
 
     if (!product) return;
 
-    const subject = encodeURIComponent(`Inquiry About ${product.name}`);
-    const body = encodeURIComponent(
-      `
-Dear ${product.sellerName || "Seller"},
+    try {
+      // Create or get existing conversation
+      const response = await fetch("/api/chat/conversations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product._id,
+          sellerId: product.sellerEmail,
+          sellerName: product.sellerName,
+        }),
+      });
 
-I am interested in "${product.name}" listed on SellItDude marketplace.
-
-Could you provide more details or suggest a time to discuss?
-      
-      Thank you!
-      
-      Best regards,
-${session.user?.name || "Buyer"}
-
----
-Product: ${product.name}
-Price: ₹${product.price?.toLocaleString()}
-Listed on: SellItDude
-    `.trim()
-    );
-
-    // Use Gmail's compose URL instead of mailto:
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${product.sellerEmail}&su=${subject}&body=${body}`;
-    window.open(gmailUrl, "_blank");
-
-    toast.success("Opening Gmail...");
+      if (response.ok) {
+        const conversation = await response.json();
+        // Open chat window by setting it in state
+        setShowContactModal(true);
+        setSelectedConversation(conversation);
+        toast.success("Chat opened!");
+      } else {
+        toast.error("Failed to start conversation");
+      }
+    } catch (error) {
+      console.error("Error starting conversation:", error);
+      toast.error("Error starting conversation");
+    }
   };
 
   const handleShare = async () => {
@@ -362,13 +363,12 @@ Listed on: SellItDude
                   onClick={handleContactSeller}
                   className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 mb-3"
                 >
-                  <Mail className="w-5 h-5" />
-                  Contact Seller
+                  <MessageCircle className="w-5 h-5" />
+                  Chat with Seller
                 </button>
 
                 <p className="text-sm text-gray-600 text-center">
-                  This will open your email client to contact the seller
-                  directly.
+                  Start a real-time chat conversation with the seller
                 </p>
               </div>
             )}
@@ -421,6 +421,16 @@ Listed on: SellItDude
         pauseOnHover
         theme="light"
       />
+
+      {selectedConversation && (
+        <ChatWindow
+          conversation={selectedConversation}
+          onClose={() => {
+            setSelectedConversation(null);
+            setShowContactModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -6,24 +6,33 @@ export async function middleware(request: NextRequest) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     const { pathname } = request.nextUrl;
 
-    // Public routes that don't require authentication
-    const publicRoutes = ['/signin', '/display', '/product'];
-    const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route)) || pathname === '/';
+    // Public routes allowed without authentication
+    const publicRoutes = ['/sign-in', '/login', '/api'];
+    const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
 
+    // If visiting /login, rewrite to /sign-in (so both work)
+    if (pathname === '/login') {
+        const url = request.nextUrl.clone();
+        url.pathname = '/sign-in';
+        return NextResponse.rewrite(url);
+    }
+
+    // If not authenticated and not on a public route, redirect to /login
     if (!token && !isPublicRoute) {
         const url = request.nextUrl.clone();
-        url.pathname = '/signin';
+        url.pathname = '/login';
         return NextResponse.redirect(url);
     }
 
-    if (token && pathname === '/signin') {
+    // If authenticated and trying to access sign-in/login, send to home
+    if (token && (pathname === '/sign-in' || pathname === '/login')) {
         const url = request.nextUrl.clone();
         url.pathname = '/';
         return NextResponse.redirect(url);
     }
 
     // Attach admin info to the request
-    if (token && token.email === 'sakthimuruganakash@gmail.com') {
+    if (token && token.email === process.env.NEXTAUTH_ADMIN_EMAIL) {
         request.headers.set('X-Is-Admin', 'true');
     }
 
@@ -31,5 +40,15 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/', '/protected/**', '/signin', '/display/:path*', '/product/:path*', '/upload/:path*', '/wishlist/:path*'],
+    matcher: [
+        '/',
+        '/sign-in',
+        '/login',
+        '/display/:path*',
+        '/product/:path*',
+        '/upload/:path*',
+        '/wishlist/:path*',
+        '/chat/:path*',
+        '/Profile/:path*'
+    ],
 };
