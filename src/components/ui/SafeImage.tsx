@@ -1,23 +1,23 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import { ImageIcon } from "lucide-react";
 
-/**
- * SafeImage component that handles image loading errors gracefully
- * 
- * @param {Object} props - Component props
- * @param {string} props.src - Image source URL
- * @param {string} props.alt - Image alt text
- * @param {string} props.fallbackSrc - Fallback image source to use when the main image fails to load
- * @param {Object} props.style - Additional style properties
- * @param {string} props.className - Additional CSS classes
- * @param {number} props.width - Image width (optional, uses fill if not provided)
- * @param {number} props.height - Image height (optional, uses fill if not provided)
- * @param {boolean} props.fill - Use fill mode (default: auto-detect based on width/height)
- * @param {Object} props.rest - Any other props to pass to the Image component
- */
-const SafeImage = ({
+interface SafeImageProps {
+  src: string;
+  alt: string;
+  fallbackSrc?: string;
+  style?: React.CSSProperties;
+  className?: string;
+  showFallbackIcon?: boolean;
+  width?: number;
+  height?: number;
+  fill?: boolean;
+  priority?: boolean;
+  unoptimized?: boolean;
+}
+
+const SafeImage: React.FC<SafeImageProps> = ({
   src,
   alt,
   fallbackSrc = "/image-product-1.jpg",

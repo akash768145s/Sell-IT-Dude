@@ -267,11 +267,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, onClose }) => {
               <ArrowLeft className="w-5 h-5" />
             </button>
             {conversation.productImage && (
-              <div className="relative w-10 h-10">
+              <div className="w-10 h-10 flex-shrink-0">
                 <SafeImage
                   src={conversation.productImage}
                   alt={conversation.productName}
-                  className="rounded object-cover w-10 h-10"
+                  width={40}
+                  height={40}
+                  className="rounded object-cover"
                 />
               </div>
             )}

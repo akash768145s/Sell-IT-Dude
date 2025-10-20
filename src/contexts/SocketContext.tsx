@@ -33,8 +33,24 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
-    // Initialize socket connection
-    const socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_URL || "", {
+    // Skip WebSocket connection on Vercel (serverless environment)
+    // Chat will work via polling instead
+    const isVercel = process.env.NEXT_PUBLIC_VERCEL === '1';
+    if (isVercel) {
+      console.log("Running on Vercel - using polling mode for chat");
+      setIsConnected(false);
+      return;
+    }
+
+    // Initialize socket connection (only for custom server deployments)
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
+    if (!socketUrl) {
+      console.log("No socket URL configured - using polling mode");
+      setIsConnected(false);
+      return;
+    }
+
+    const socketInstance = io(socketUrl, {
       transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionDelay: 1000,
@@ -71,6 +87,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => {
       socketInstance.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   return (
