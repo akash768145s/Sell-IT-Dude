@@ -1,13 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["utfs.io", "lh3.googleusercontent.com", "res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        port: "",
+        pathname: "/f/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+    unoptimized: process.env.NODE_ENV === 'development',
   },
-  reactStrictMode: true,
-  swcMinify: true,
-  env: {
-    NEXTAUTH_ADMIN_EMAIL: process.env.NEXTAUTH_ADMIN_EMAIL,
+  eslint: {
+    ignoreDuringBuilds: false,
   },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  output: 'standalone',
 };
 
 module.exports = nextConfig;
